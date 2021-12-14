@@ -20,7 +20,6 @@ export class AppComponent {
       },
     ],
     excludeAcceptAllOption: true,
-    multiple: false,
   };
 
   async getFile() {
@@ -34,7 +33,17 @@ export class AppComponent {
   }
   async saveFile() {
     // open file picker
-    this.newFile = await window.showSaveFilePicker();
+    this.newFile = await window.showSaveFilePicker({
+      types: [
+        {
+          description: 'Images',
+          accept: {
+            'image/png': ['.png'],
+          },
+        },
+      ],
+      excludeAcceptAllOption: true,
+    });
     const writableStream = await this.newFile.createWritable();
     await writableStream.write(this.selectedFile);
     await writableStream.close();
