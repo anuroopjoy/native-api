@@ -1,3 +1,37 @@
-<button (click)="getFile()">Select File</button>
-<button (click)="getFolder()">Delete File</button>
-<button (click)="saveFile()">Save File</button>
+<div class="container-fluid">
+  <div class="row align-items-start full-height">
+    <div class="col-3 border border-dark h-100">
+      <ul class="nav flex-column">
+        <li class="nav-item" (click)="select('file')">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: selected === 'file' }"
+            >File System Access</a
+          >
+        </li>
+        <li class="nav-item" (click)="select('capture')">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: selected === 'capture' }"
+            >Media Capture</a
+          >
+        </li>
+        <li class="nav-item" (click)="select('stream')">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: selected === 'stream' }"
+            >Media Stream</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="col-9 h-100 text-center p-5">
+      <ng-container *ngIf="selected === 'file'">
+        <app-file-access-system></app-file-access-system>
+      </ng-container>
+      <ng-container *ngIf="selected === 'capture'">
+        <app-media-capture></app-media-capture>
+      </ng-container>
+    </div>
+  </div>
+</div>
