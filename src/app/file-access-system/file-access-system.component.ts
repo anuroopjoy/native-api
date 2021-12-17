@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class FileAccessSystemComponent {
   selectedFile!: File;
   newFile!: FileSystemFileHandle;
-  pickerOpts = {
+  pickerOpts: FilePickerOptions = {
     types: [
       {
         description: 'Images',
@@ -24,6 +24,7 @@ export class FileAccessSystemComponent {
     // open file picker
     let fileHandle: FileSystemFileHandle;
     [fileHandle] = await window.showOpenFilePicker(this.pickerOpts);
+    console.log(fileHandle);
     if (fileHandle.kind === 'file') {
       this.selectedFile = await fileHandle.getFile();
       console.log(this.selectedFile);
@@ -41,6 +42,7 @@ export class FileAccessSystemComponent {
         },
       ],
       excludeAcceptAllOption: true,
+      suggestedName: 'test.png',
     });
     const writableStream = await this.newFile.createWritable();
     await writableStream.write(this.selectedFile);
@@ -54,11 +56,17 @@ export class FileAccessSystemComponent {
     const isFilePresent = (await dirHandle.resolve(this.newFile))?.includes(
       target
     );
+    // Before Delete
+    let files = dirHandle.keys();
+    for await (const file of files) {
+      console.log(file);
+    }
     if (isFilePresent) {
       await dirHandle.removeEntry(target);
       console.log('File removed');
     }
-    const files = dirHandle.keys();
+    // After Delete
+    files = dirHandle.keys();
     for await (const file of files) {
       console.log(file);
     }
